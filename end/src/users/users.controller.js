@@ -52,7 +52,34 @@ const removeUserById = (req,res) =>{
 }
 
 const changeUserData = (req,res) => {
-    let USER = USERS.find(users => users.username === req.params.username)
+    if(req.body){
+        if(req.body.email && !req.body.name){
+            USERmodel.findByIdAndUpdate(req.params.id, {$set : {email : req.body.email}}, {runValidators : true})
+            .then( response => {
+                res.send('email changed perfectly')
+            }).catch( err => {
+                res.status(400).send('Impossible to change the email')
+            })
+        } else if (!req.body.email && req.body.name){
+            USERmodel.findByIdAndUpdate(req.params.id, {$set : {name : req.body.name}})
+                .then( response => {
+                    res.send('name changed perfectly')
+                }).catch( err => {
+                    res.status(400).send('Impossible to change the name')
+                })
+        } else if (req.body.email && req.body.name){
+            USERmodel.findByIdAndUpdate(req.params.id, {$set : {name : req.body.name, email : req.body.email}}, {runValidators : true})
+                .then( response => {
+                    res.send('name and email changed perfectly')
+                }).catch( err => {
+                    res.status(400).send('Impossible to change the name or the email')
+                })
+        }else {
+            res.status(400).send('invalid data')
+        }
+    }
+    
+    /* let USER = USERS.find(users => users.username === req.params.username)
     if(USER){
         if(req.body.email){
             USER.email = req.body.email;
@@ -65,7 +92,7 @@ const changeUserData = (req,res) => {
         }
     } else {
         res.status(400).send('User not found')
-    }
+    } */
 }
 
 

@@ -4,6 +4,11 @@ const usersRouter = require('./end/src/users/index');
 const tweetsRouter = require('./end/src/tweets/index');
 const mongoose = require('mongoose');
 
+const config = require('./.env');
+const options = config[process.env.NODE_ENV];
+const _PORT = options.PORT;
+
+
 
 mongoose.connect('mongodb://localhost/twitterAppi' );
 
@@ -36,4 +41,4 @@ app.use('/users', usersRouter);
 
 // functiones de tweets
 app.use('/tweets', tweetsRouter);
-app.listen(4000);
+app.listen(_PORT);

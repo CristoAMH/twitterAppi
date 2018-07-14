@@ -42,19 +42,13 @@ const createUser =  (req, res) => {
 }
 
 const removeUserById = (req,res) =>{
-    if(req.params.username){
-        const removeIndex = USERS.map(function(users) { return users.username; }).indexOf(req.params.username);
-        console.log(removeIndex);
-        // remove object
-        if(removeIndex !== -1){
-            USERS.splice(removeIndex, 1);
-            fs.writeFile(__dirname + '/users.json',JSON.stringify(USERS))
-            res.status(200).send('User removed prefectly');
-        }else {
-            res.status(400).send('Invalid username')
-        }
-    } 
-    
+    USERmodel.findOneAndRemove({_id : req.params.id})
+        .then( resolve => {
+            console.log(resolve);
+            res.send(resolve)
+        }).catch(err => {
+            res.status(400).send('Invalid user ID')
+        })
 }
 
 const changeUserData = (req,res) => {

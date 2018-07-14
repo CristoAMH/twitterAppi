@@ -8,7 +8,7 @@ const controller = require('./users.controller')
 
 
 router.get('/', controller.getAllUsers);
-router.get('/:username',controller.getUserByID)
+router.get('/:id',controller.getUserByID)
 router.post('/', controller.createUser);
 router.delete('/:username', controller.removeUserById)
 router.patch('/:username', controller.changeUserData)

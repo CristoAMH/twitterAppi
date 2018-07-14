@@ -9,10 +9,20 @@ const getAllUsers = (req, res) => {
         .then(response => {
             console.log(response);
             res.json(response);
-        }).catch(err => console.log(err))
+        }).catch(err =>{
+            console.log(err);
+            res.status(400).send(err)
+        })
 }
 const getUserByID = (req, res) => {
-    res.json(USERmodel.findById(req.params.id));
+    USERmodel.find({_id : req.params.id})
+        .then(response => {
+            console.log(response);
+            res.json(response)
+        }).catch(err => {
+            console.log(err);
+            res.status(400).send(err);
+        })
 }
 
 const createUser =  (req, res) => {

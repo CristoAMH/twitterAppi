@@ -11,8 +11,6 @@ const options = config[process.env.NODE_ENV];
 const _PORT = options.PORT;
 const _DB = options.DB_URL;
 
-
-
 mongoose.connect(_DB);
 
 app.use(express.json());
@@ -22,7 +20,6 @@ app.use(morgan('combined'));
 app.use(compression())
 
 app.use('/users', usersRouter);
-
-// functiones de tweets
 app.use('/tweets', tweetsRouter);
+
 app.listen(_PORT);

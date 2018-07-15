@@ -1,9 +1,5 @@
 const USERmodel = require('./users.model');
 
-const fs = require('fs')
-
-const USERS = JSON.parse(fs.readFileSync(__dirname + '/users.json') );
-
 const getAllUsers = (req, res) => {
     USERmodel.find()
         .then(response => {

@@ -9,10 +9,11 @@ const compression = require('compression');
 const config = require('./.env');
 const options = config[process.env.NODE_ENV];
 const _PORT = options.PORT;
+const _DB = options.DB_URL;
 
 
 
-mongoose.connect('mongodb://localhost/twitterAppi' );
+mongoose.connect(_DB);
 
 app.use(express.json());
 

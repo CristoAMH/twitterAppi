@@ -8,5 +8,6 @@ USERS = JSON.parse(fs.readFileSync('./end/src/users/users.json'));
 router.get('/', controller.getAllTweets)
 router.get('/:id', controller.getTweetByID)
 router.post('/', controller.createTweet)
+router.delete('/:id', controller.deleteTweetById)
 
 module.exports = router;

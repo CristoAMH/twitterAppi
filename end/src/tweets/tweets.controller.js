@@ -1,34 +1,61 @@
-const fs = require('fs');
+const tweetModel = require("./tweets.model")
+const userModel = require("../users/users.model");
 
 const getAllTweets =  (req, res) => {
-    res.json(USERS.reduce(function(prev, users) {
-       return [...prev,...users.tweets];
-    },[]));
+    tweetModel.find()
+        .then(response => {
+            console.log(response);
+            res.json(response);
+        }).catch(err =>{
+            console.log(err);
+            res.status(400).send(err)
+        })
 }
 
 const getTweetByID =  (req,res) => {
-    USERS.forEach(user => {
-        res.json(user.tweets.find( tweet => tweet.id === req.params.id));
-    })
+    tweetModel.find({_id : req.params.id})
+        .then(response => {
+            console.log(response);
+            res.json(response)
+        }).catch(err => {
+            console.log(err);
+            res.status(400).send(err);
+        })
 }
 
 const createTweet =  (req, res) => {
-    req.body.id = 'tweet-' + Date.now();
-    if(isTheOnlyTweet(USERS,req.body.id) === false){
-        const newTweet = req.body;
-        let USER = USERS.find(users => users.email === req.body.owner)
-        USER.tweets.push(newTweet);
-        fs.writeFile('./end/src/users/users.json', JSON.stringify(USERS))
-        return res.json(newTweet);
-    } else {
-        return res.status(400).send(`Can't upload the tweet, The ID is already taken`)
-    }
+    if(req.body && req.body.owner && req.body.text){
+        if(userModel.findOne({username : req.body.owner}, (err, user) => {
+            if (err) { res.status(400).send('That user doesnt exist') }
+            if (user) {
+                let newTweet = new tweetModel ({
+                owner: req.body.owner,
+                text : req.body.text,
+                createdAt : Date.now()
+                })
+                newTweet.save(function (err) {
+                    if (err) return res.status(406).send(err.message);
+                    return res.status(201).json(newTweet);
+                })
+            } else {
+                res.status(400).send('No user found');
+            }
+        }));
+    }    
 }
-
-const isTheOnlyTweet = (users,idx) =>  users.some(user => user.tweets.some(tweet => tweet.id == idx))
+const deleteTweetById = (req, res) => {
+    tweetModel.findOneAndRemove({_id : req.params.id})
+        .then( resolve => {
+        console.log(resolve);
+        res.send(resolve)
+    }).catch(err => {
+        res.status(400).send('Invalid user ID')
+    });
+}
 
 module.exports = {
     getAllTweets,
     getTweetByID,
-    createTweet
+    createTweet,
+    deleteTweetById
 }

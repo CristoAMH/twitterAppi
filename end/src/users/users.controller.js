@@ -78,21 +78,6 @@ const changeUserData = (req,res) => {
             res.status(400).send('invalid data')
         }
     }
-    
-    /* let USER = USERS.find(users => users.username === req.params.username)
-    if(USER){
-        if(req.body.email){
-            USER.email = req.body.email;
-            USER.tweets.forEach(tweet => tweet.owner = req.body.email)
-            res.status(200).send(`Email changed perfectly`)
-        } 
-        if(req.body.name){
-            USER.name = req.body.name;
-            res.status(200).send(`Name changed perfecly`)
-        }
-    } else {
-        res.status(400).send('User not found')
-    } */
 }
 
 

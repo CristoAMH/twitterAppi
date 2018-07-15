@@ -53,9 +53,17 @@ const deleteTweetById = (req, res) => {
     });
 }
 
+const getTweetsByUsername =  (username) => {
+    return tweetModel.find({owner : username})
+        .then( tweets => {
+            return tweets;
+        })
+}
+
 module.exports = {
     getAllTweets,
     getTweetByID,
     createTweet,
-    deleteTweetById
+    deleteTweetById,
+    getTweetsByUsername
 }

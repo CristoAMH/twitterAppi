@@ -4,6 +4,7 @@ const controller = require('./tweets.controller');
 
 router.get('/', controller.getAllTweets)
 router.get('/:id', controller.getTweetByID)
+router.get('/:username', controller.getTweetsByUsername)
 router.post('/', controller.createTweet)
 router.delete('/:id', controller.deleteTweetById)
 

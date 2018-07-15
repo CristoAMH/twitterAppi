@@ -15,7 +15,7 @@ let USERschema = mongoose.Schema({
             }
         },
         unique : true
-    } 
+    },
 });
 
 let USER = mongoose.model('users', USERschema);

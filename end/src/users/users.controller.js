@@ -1,5 +1,4 @@
 const USERmodel = require('./users.model');
-const tweetModel = require('../tweets/tweets.model')
 const {getTweetsByUsername} = require("../tweets/tweets.controller")
 
 const getAllUsers = (req, res) => {
@@ -12,18 +11,9 @@ const getAllUsers = (req, res) => {
             res.status(400).send(err)
         })
 }
-/* const getUserByID = (req, res) => {
-    USERmodel.find({_id : req.params.id})
-        .then(response => {
-            console.log(response);
-            res.json(response)
-        }).catch(err => {
-            console.log(err);
-            res.status(400).send(err);
-        })
-} */
+
 const  getUserByUsername = (req, res) => {
-	USERmodel.findOne({username : req.params.username},{}, {lean : true})
+	USERmodel.findOne({username : req.params.username},{},{lean : true})
 		.then( user => {
             console.log('USUARIO -> ' , user);
            getTweetsByUsername(req.params.username)
@@ -38,23 +28,7 @@ const  getUserByUsername = (req, res) => {
         })
 
 }
-/* const  getUserByUsername = (req, res) => {
-	USERmodel.find({username : req.params.username})
-		.then( user => {
-            console.log('USUARIO -> ' , user);
-           getTweetsByUsername(req.params.username)
-			 .then( tweets => { 
-			   	const copy = Object.assign({}, user);
-                console.log('tweets -> ',tweets);
-                console.log('user.tweets ->', user.tweets)
-                copy.tweets = Object.assign([],tweets);
-                console.log('user.tweets ->', user.tweets)
-				res.json(JSON.parse(JSON.stringify(copy)));
-		   })
-        })
 
-}
- */
 const createUser =  (req, res) => {
     let newUser = new USERmodel({
         username: req.body.username,
@@ -114,7 +88,6 @@ const changeUserData = (req,res) => {
 
 module.exports = {
     getAllUsers,
-    // getUserByID,
     getUserByUsername,
     createUser,
     removeUserById,

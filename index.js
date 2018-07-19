@@ -13,8 +13,10 @@ const _DB = options.DB_URL;
 
 mongoose.connect(_DB);
 
+app.set('views', './views');
+app.set('view engine', 'pug');
 app.use(express.json());
-
+app.use(express.static('public'));
 //Los middlewares
 app.use(morgan('combined'));
 app.use(compression())

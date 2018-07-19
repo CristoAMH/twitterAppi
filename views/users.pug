@@ -1,0 +1,14 @@
+extends ./html.pug
+
+block content
+    h1 Hello World
+        ul
+            each user in users
+                li
+                    h2 name : #{user.name};
+                    h3 username : #{user.username}
+                    h3 email : #{user.email}
+                ul
+                    each tweet in user.tweets
+                        li
+                            p tweet : #{tweet.text}

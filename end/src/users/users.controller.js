@@ -2,10 +2,22 @@ const USERmodel = require('./users.model');
 const {getTweetsByUsername} = require("../tweets/tweets.controller")
 
 const getAllUsers = (req, res) => {
-    USERmodel.find()
+    USERmodel.find({},{},{lean : true})
         .then(response => {
+            console.log('1st response ->', response)
+            response.forEach(user => {
+                console.log('users ->', user)
+                getTweetsByUsername(user.username)
+                    .then( tweets => { 
+                        user.tweets = tweets;
+                        console.log('User tweets ->', user.tweets)
+                        console.log('final response ->', response)
+                        res.render('users', {users : response});
+                })
+            })
+            /* 
             console.log(response);
-            res.json(response);
+            res.render('users', {users : response}); */
         }).catch(err =>{
             console.log(err);
             res.status(400).send(err)
@@ -15,15 +27,10 @@ const getAllUsers = (req, res) => {
 const  getUserByUsername = (req, res) => {
 	USERmodel.findOne({username : req.params.username},{},{lean : true})
 		.then( user => {
-            console.log('USUARIO -> ' , user);
            getTweetsByUsername(req.params.username)
 			 .then( tweets => { 
-                console.log('tweets -> ',tweets);
-                console.log('user.tweets ->', user.tweets)
                 user.tweets = tweets;
-                console.log('user.tweets ->', user.tweets)
-                console.log('USUARIO -> ' , user);
-				res.json(user);
+				res.render('user', {user : user});
 		   })
         })
 
@@ -48,9 +55,8 @@ const createUser =  (req, res) => {
 const removeUserById = (req,res) =>{
     USERmodel.findOneAndRemove({_id : req.params.id})
         .then( resolve => {
-            twe
             console.log(resolve);
-            res.send(resolve)
+            res.send('user deleted')
         }).catch(err => {
             res.status(400).send('Invalid user ID')
         })
